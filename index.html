@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumina — AI Data Visualizer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- CDN Dependencies -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <!-- Leaflet (geo maps) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/charts.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <span class="logo-name">Lumina</span>
+    </div>
+    <span class="logo-tag">AI Data Visualizer</span>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Your data,<br><em>beautifully</em> understood.</h1>
+      <p>Drop in a CSV or JSON file and let AI determine the best way to visualize your data — instantly.</p>
+    </div>
+
+    <!-- Chart Type Picker -->
+    <div class="chart-picker">
+      <div class="chart-picker-title">
+        <strong>Choose visualization types</strong>
+        <span>Select the chart styles you want returned. Leave Default selected to let AI choose the best visuals.</span>
+      </div>
+      <div class="chart-picker-grid">
+        <button type="button" class="chart-picker-button selected" data-chart-type="default">Default</button>
+        <button type="button" class="chart-picker-button" data-chart-type="bar">Bar</button>
+        <button type="button" class="chart-picker-button" data-chart-type="pie">Pie</button>
+        <button type="button" class="chart-picker-button" data-chart-type="doughnut">Doughnut</button>
+        <button type="button" class="chart-picker-button" data-chart-type="line">Line</button>
+        <button type="button" class="chart-picker-button" data-chart-type="scatter">Scatter</button>
+        <button type="button" class="chart-picker-button" data-chart-type="stacked">Stacked</button>
+        <button type="button" class="chart-picker-button" data-chart-type="heatmap">Heatmap</button>
+        <button type="button" class="chart-picker-button" data-chart-type="candlestick">Candlestick</button>
+        <button type="button" class="chart-picker-button" data-chart-type="geo">Geo</button>
+      </div>
+    </div>
+
+    <!-- Upload Zone -->
+    <div class="upload-zone" id="upload-zone">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <h3>Drop your file here</h3>
+      <p>CSV or JSON · up to 10 MB</p>
+      <button class="upload-btn" onclick="document.getElementById('file-input').click()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M12 5v14M5 12l7-7 7 7"/>
+        </svg>
+        Choose File
+      </button>
+      <div class="file-types">
+        <span class="file-tag">.csv</span>
+        <span class="file-tag">.json</span>
+      </div>
+      <input type="file" id="file-input" accept=".csv,.json,text/csv,application/json">
+    </div>
+
+    <!-- Error -->
+    <div class="error-box" id="error-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span id="error-text"></span>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-state" id="loading-state">
+      <div class="loader-ring"></div>
+      <div class="loading-steps">
+        <div class="loading-step" id="step1">Parsing data file…</div>
+        <div class="loading-step" id="step2">Analyzing column structure…</div>
+        <div class="loading-step" id="step3">Consulting AI for best visualizations…</div>
+        <div class="loading-step" id="step4">Building charts…</div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results" id="results">
+      <div class="results-header">
+        <div class="results-meta">
+          <h2>Visualization Complete</h2>
+          <p>AI selected <strong id="chart-count">3</strong> chart types for your dataset.</p>
+        </div>
+        <button class="reset-btn" onclick="resetApp()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <polyline points="1 4 1 10 7 10"/>
+            <path d="M3.51 15a9 9 0 1 0 .49-3.39"/>
+          </svg>
+          Upload new file
+        </button>
+      </div>
+      <div class="selection-message" id="selection-message"></div>
+      <div class="charts-track" id="charts-track"></div>
+    </div>
+  </main>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/config.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,290 @@
+/* ─── components.css — upload, error, loading, results UI ─────────────── */
+
+/* ─── Chart Type Picker ──────────────────────────────────────────────── */
+.chart-picker {
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 24px;
+}
+
+.chart-picker-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.chart-picker-title strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.chart-picker-title span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.chart-picker-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chart-picker-button {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+.chart-picker-button:hover {
+  border-color: rgba(200,240,96,0.3);
+  color: var(--text);
+  background: rgba(200,240,96,0.05);
+}
+.chart-picker-button.selected {
+  border-color: var(--accent);
+  background: rgba(200,240,96,0.1);
+  color: var(--accent);
+  font-weight: 600;
+}
+/* Default button has a slightly different selected style */
+.chart-picker-button[data-chart-type="default"].selected {
+  border-color: var(--accent2);
+  background: rgba(96,180,240,0.1);
+  color: var(--accent2);
+}
+
+
+.upload-zone {
+  border: 1.5px dashed rgba(200,240,96,0.25);
+  border-radius: 20px;
+  padding: 52px 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: rgba(200,240,96,0.02);
+  position: relative;
+  overflow: hidden;
+}
+.upload-zone:hover,
+.upload-zone.dragover {
+  border-color: rgba(200,240,96,0.6);
+  background: rgba(200,240,96,0.04);
+  transform: translateY(-1px);
+}
+
+.upload-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 20px;
+  background: rgba(200,240,96,0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upload-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--accent);
+}
+
+.upload-zone h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.upload-zone p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: var(--accent);
+  color: #0a0a0f;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.upload-btn:hover { opacity: 0.85; }
+
+#file-input { display: none; }
+
+.file-types {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.file-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+/* Error box */
+.error-box {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 14px 18px;
+  background: rgba(240,96,96,0.07);
+  border: 1px solid rgba(240,96,96,0.2);
+  border-radius: 10px;
+  font-size: 13px;
+  color: #f08080;
+}
+.error-box.visible { display: flex; }
+.error-box svg { flex-shrink: 0; }
+
+/* Loading state */
+.loading-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 0;
+  gap: 20px;
+}
+.loading-state.visible { display: flex; }
+
+.loader-ring {
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+.loading-step {
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.loading-step.active {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* Results section */
+.results {
+  display: none;
+  margin-top: 48px;
+  animation: fadeUp 0.5s ease forwards;
+}
+.results.visible { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.results-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.results-meta h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+.results-meta p {
+  font-size: 13px;
+  color: var(--muted);
+}
+.results-meta strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.reset-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  background: var(--surface);
+}
+
+.charts-track {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+/* Selection notice */
+.selection-notice {
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+}
+.selection-notice strong { color: var(--text); }
+.selection-notice.warn {
+  background: rgba(240,180,96,0.07);
+  border-color: rgba(240,180,96,0.25);
+  color: #f0b860;
+}
+
+.selection-message {
+  display: none;
+  margin-bottom: 20px;
+}
+.selection-message.visible {
+  display: block;
+}

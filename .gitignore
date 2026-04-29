@@ -1,0 +1,35 @@
+# ─── Dependencies ────────────────────────────────────────────────────────
+node_modules/
+package-lock.json
+yarn.lock
+
+# ─── Environment / Secrets ───────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── OS files ────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ─── Editor folders ──────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ─── Backup / temp files ─────────────────────────────────────────────────
+*.bak
+*.backup
+*.tmp
+*.log
+
+# ─── Build output (for if you ever add a build step) ─────────────────────
+dist/
+build/
